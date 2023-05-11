@@ -1,6 +1,6 @@
 # Sedaro - Digital Twins and the Engineering Multiverse
 
-This project showcases an interactive line chart to visualize data related to Digital Twins and the Engineering Multiverse. The aim of this take-home project is to demonstrate the application of various technologies, optimization techniques, and accessibility improvements.
+This project showcases an interactive line chart to visualize data related to Digital Twins and the Engineering Multiverse. The aim of this project is to demonstrate the application of various technologies, optimization techniques, and accessibility improvements.
 
 ## Table of Contents
 
@@ -43,7 +43,5 @@ npm start
 - Implement error handling for better user experience
 - Increase test coverage to ensure the robustness of the application
 - Enhance responsive design for various screen sizes
-
-
 
 Please feel free to modify the content as per your requirements.
