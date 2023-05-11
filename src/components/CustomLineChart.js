@@ -12,6 +12,10 @@ import {
 const CustomLineChart = ({ data, width, height, darkMode, chartStyle }) => {
   const chartBackgroundColor = darkMode ? "#424242" : "#ffffff";
 
+  const formatXAxis = (tickItem) => {
+    return Number(tickItem).toFixed(2);
+  };
+
   return (
     <svg width={width} height={height}>
       <foreignObject x="0" y="0" width={width} height={height}>
@@ -23,12 +27,12 @@ const CustomLineChart = ({ data, width, height, darkMode, chartStyle }) => {
           margin={{
             top: 5,
             right: 30,
-            left: 20,
+            left: -20,
             bottom: 5,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="time" />
+          <XAxis dataKey="time" tickFormatter={formatXAxis} />
           <YAxis />
           <Tooltip />
           <Legend />

@@ -14,10 +14,11 @@ import { useResizeDetector } from "react-resize-detector";
 import { motion } from "framer-motion";
 
 import data from "./data";
-import sedaroLogo from './assets/sedaro-logo.webp';
-import backgroundImage from './assets/background.png';
+import sedaroLogo from "./assets/sedaro-logo.webp";
+import backgroundImage from "./assets/background.png";
 import flattenData from "./components/flattenData";
 import CustomLineChart from "./components/CustomLineChart";
+
 import styles from "./styles";
 import "./app.css";
 
@@ -41,16 +42,24 @@ const CustomButton = styled(Button)(({ theme }) => ({
     transition: "all 0.4s",
     color: "#FFFFFF",
     boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
-    border: "1px solid white"
+    border: "1px solid white",
   },
 }));
 
 const flattenedData = flattenData(data);
 
 function App() {
-  const { ref, width = window.innerWidth } = useResizeDetector();
+  const {
+    ref,
+    width = window.innerWidth,
+    height = window.innerHeight,
+  } = useResizeDetector();
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [graphHeight, setGraphHeight] = useState(
+    window.innerWidth < 576 ? window.innerHeight * 0.5 - 50 : 500
+  );
+
   const headersRef = useRef(null);
 
   useEffect(() => {
@@ -58,6 +67,10 @@ function App() {
       setLoading(false);
     }, 2000);
   }, []);
+
+  useEffect(() => {
+    setGraphHeight(width < 576 ? height * 0.5 - 50 : 500);
+  }, [width, height]);
 
   const handleThemeToggle = () => {
     setDarkMode(!darkMode);
@@ -84,12 +97,12 @@ function App() {
       return {
         backgroundColor: "rgb(66, 66, 66)",
         backgroundImage: "none",
-        backgroundRepeat: "round"
+        backgroundRepeat: "round",
       };
     } else {
       return {
         backgroundImage: `url(${backgroundImage})`,
-        backgroundRepeat: "round"
+        backgroundRepeat: "round",
       };
     }
   };
@@ -97,107 +110,113 @@ function App() {
   const appStyles = {
     ...styles.app,
     ...getBackgroundStyles(),
+    paddingBottom: window.innerWidth <= 768 ? "50px" : "0px",
   };
 
   return (
-  <ThemeProvider theme={theme}>
-    <motion.div
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 50, duration: 0.5 }}
-    >
-      <AppBar position="static">
-        <Toolbar style={styles.toolbar}>
-          <img src={sedaroLogo} alt="Company logo" style={styles.logo} />
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-            style={styles.title}
-          ></Typography>
-          <IconButton
-            color="inherit"
-            aria-label="toggle dark mode"
-            onClick={handleThemeToggle}
-            sx={{ fontSize: '1.3em' }}
+    <ThemeProvider theme={theme}>
+      <motion.div
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 50, duration: 0.5 }}
+      >
+        <AppBar position="static">
+          <Toolbar style={styles.toolbar}>
+            <img src={sedaroLogo} alt="Company logo" style={styles.logo} />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1 }}
+              style={styles.title}
+            ></Typography>
+            <IconButton
+              color="inherit"
+              aria-label="toggle dark mode"
+              onClick={handleThemeToggle}
+              sx={{ fontSize: "1.3em" }}
+            >
+              {darkMode ? (
+                <Brightness7Icon
+                  sx={{ fontSize: "1.3em", width: "1.3em", height: "1.3em" }}
+                />
+              ) : (
+                <Brightness4Icon
+                  sx={{ fontSize: "1.3em", width: "1.3em", height: "1.3em" }}
+                />
+              )}
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </motion.div>
+      <motion.div
+        className={`App ${loading ? "animatedBackground" : ""}`}
+        style={appStyles}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {loading ? (
+          <div style={styles.spinnerContainer}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <motion.div
+            ref={ref}
+            style={styles.chartContainer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
           >
-            {darkMode ? (
-              <Brightness7Icon sx={{ fontSize: '1.3em', width: '1.3em', height: '1.3em' }} />
-            ) : (
-              <Brightness4Icon sx={{ fontSize: '1.3em', width: '1.3em', height: '1.3em' }} />
-            )}
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </motion.div>
-    <motion.div
-      className={`App ${loading ? "animatedBackground" : ""}`}
-      style={appStyles}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      {loading ? (
-        <div style={styles.spinnerContainer}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <motion.div
-          ref={ref}
-          style={styles.chartContainer}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          <div className="hero">
-            <div className="headers" ref={headersRef}>
-              <h1>Digital Twins and the Engineering Multiverse</h1>
-              <h2>Enabling breakthrough designs and optimized performance</h2>
-              <div className="button">
-                <CustomButton variant="contained">
-                  <p>Learn More</p>
-                </CustomButton>
+            <div className="hero">
+              <div className="headers" ref={headersRef}>
+                <h1 style={{ color: darkMode ? "#FFFFFF" : "#DDDDDD" }}>
+                  Digital Twins and the Engineering Multiverse
+                </h1>
+                <h2 style={{ color: darkMode ? "#FFFFFF" : "#DDDDDD" }}>
+                  Enabling breakthrough designs and optimized performance
+                </h2>
+                <div className="button">
+                  <CustomButton variant="contained">
+                    <p>Learn More</p>
+                  </CustomButton>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="wrapper">
-            <UncontrolledReactSVGPanZoom
-              width={
-                headersRef.current
-                  ? headersRef.current.clientWidth
-                  : width
-              }
-              height={500}
-              scaleFactorMin={1}
-              scaleFactorMax={10}
-            >
-              <svg
+            <div className="wrapper" style={{ marginTop: "30px" }}>
+              {" "}
+              <UncontrolledReactSVGPanZoom
                 width={
-                  headersRef.current
-                    ? headersRef.current.clientWidth
-                    : width
+                  headersRef.current ? headersRef.current.clientWidth : width
                 }
-                height={500}
+                height={graphHeight}
+                scaleFactorMin={1}
+                scaleFactorMax={10}
               >
-                <CustomLineChart
+                <svg
                   width={
-                    headersRef.current
-                      ? headersRef.current.clientWidth
-                      : width
+                    headersRef.current ? headersRef.current.clientWidth : width
                   }
-                  height={500}
-                  data={flattenedData}
-                  darkMode={darkMode}
-                  chartStyle={getBackgroundStyles()}
-                />
-              </svg>
-            </UncontrolledReactSVGPanZoom>
-          </div>
-        </motion.div>
-      )}
-    </motion.div>
-  </ThemeProvider>
-);
+                  height={graphHeight}
+                >
+                  <CustomLineChart
+                    width={
+                      headersRef.current
+                        ? headersRef.current.clientWidth
+                        : width
+                    }
+                    height={graphHeight}
+                    data={flattenedData}
+                    darkMode={darkMode}
+                    chartStyle={getBackgroundStyles()}
+                  />
+                </svg>
+              </UncontrolledReactSVGPanZoom>
+            </div>
+          </motion.div>
+        )}
+      </motion.div>
+    </ThemeProvider>
+  );
 }
 
 export default App;
