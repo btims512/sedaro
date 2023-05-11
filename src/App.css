@@ -1,9 +1,55 @@
+h1, h2 {
+  color: #DDDDDD;
+  text-align: start;
+  margin-top: 42px;
+  margin-bottom: 42px;
+  width: 575px;
+}
+
+h1 {
+  font-size: 48px;
+  line-height: 1.2em;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-family: poppins-extralight, poppins, sans-serif;
+  color: #DDDDDD;
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 1.2em;
+  letter-spacing: normal;
+  font-weight: 300;
+  font-family: poppins-extralight, poppins, sans-serif;
+  color: #DDDDDD;
+}
+
+p {
+  font-weight: 300;
+}
+
+.headers {
+  margin: 75px;
+}
+
+.wrapper {
+  margin: 75px;
+}
+
+.hero {
+  margin-bottom: 200px;
+}
+
+.button {
+  text-align-last: left;
+  margin-top: 60px;
+}
+
 .toggle-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(31, 182, 223, 0.1);
 }
 
 .animatedBackground {
-  /* background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%); */
   background-size: 300% 300%;
   animation: gradient 15s ease infinite;
 }

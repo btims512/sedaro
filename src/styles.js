@@ -5,10 +5,16 @@ const styles = {
   title: {
     textAlign: "center",
   },
+  logo: {
+    width: "273px",
+  },
+  toolbar: {
+    minHeight: "105px",
+  },
   chartContainer: {
     position: "relative",
     width: "100%",
-    height: "100vh",
+    height: "125vh",
     overflow: "hidden",
   },
   spinnerContainer: {
@@ -20,9 +26,9 @@ const styles = {
   lineChart: {},
   buttons: {
     position: "absolute",
+    backgroundColor: "#4d68bd",
     right: "20px",
     bottom: "20px",
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
     padding: "10px",
     border: "1px solid #ccc",
     borderRadius: "5px",
